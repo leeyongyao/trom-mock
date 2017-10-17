@@ -1,0 +1,17 @@
+{
+  "name": "tron-mock",
+  "version": "1.0.0",
+  "description": "tron-m mock server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "linifftwe@163.com",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "moment": "^2.19.1",
+    "nedb": "^1.8.0"
+  }
+}
