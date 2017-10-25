@@ -16,7 +16,8 @@ const db = new nedb({
 router.get('/newses', (req, res, next) => {
   console.log('\n=============================');
   console.log(req.route.stack[0].method, req.route.path, 'success');
-  db.find({}).skip(req.query.page - 1).limit(req.query.rows).exec(handleErr(res, (content) => {
+  const { page, rows } = req.query;
+  db.find({}).skip((page - 1) * rows).limit(rows).exec(handleErr(res, (content) => {
     db.count({}, handleErr(res, (totalElements) => {
       handleSuccess(res)({
         totalElements,

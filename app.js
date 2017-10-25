@@ -5,7 +5,7 @@ var app = express();
 
 /** 允许跨域配置 **/
 app.all('*', function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:8082');
+  res.header('Access-Control-Allow-Origin', req.headers.origin);
   res.header('Access-Control-Allow-Credentials', true);
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   res.header('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,OPTIONS');
@@ -18,7 +18,10 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 app.use('/oib-api', [
-  require('./modules/oib')
+  // require('./modules/oib')
+  require('./modules/oib/work'),
+  require('./modules/oib/news'),
+  require('./modules/oib/customer')
 ]);
 
 app.use(function(req, res, next) {
