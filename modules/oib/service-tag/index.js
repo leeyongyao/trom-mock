@@ -7,9 +7,9 @@ const handleSuccess = require('../../../utils/handleSuccess');
 const getIdQuery = require('../../../utils/getIdQuery');
 const router = express.Router();
 
-const db = getDb.customer;
+const db = getDb.serviceTag;
 
-router.get('/customers', (req, res, next) => {
+router.get('/service-tags', (req, res, next) => {
   console.log('\n=============================');
   console.log(req.route.stack[0].method, req.route.path, 'success');
   db.find({}).skip(req.query.page - 1).limit(req.query.rows).exec(handleErr(res, (content) => {
@@ -23,13 +23,13 @@ router.get('/customers', (req, res, next) => {
 });
 
 // id只能为数字
-router.get('/customer/:id(\\d+)', function(req, res, next) {
+router.get('/service-tag/:id(\\d+)', function(req, res, next) {
   console.log('\n=============================');
   console.log(req.route.stack[0].method, req.route.path, 'success');
   db.findOne(getIdQuery(req), handleErr(res, handleSuccess(res)));
 });
 
-router.put('/customer/:id(\\d+)', function(req, res, next) {
+router.put('/service-tag/:id(\\d+)', function(req, res, next) {
   console.log('\n=============================');
   console.log(req.route.stack[0].method, req.route.path, 'success');
   db.update(getIdQuery(req), {
@@ -39,10 +39,10 @@ router.put('/customer/:id(\\d+)', function(req, res, next) {
   }, { returnUpdatedDocs: true }, handleErr(res, handleSuccess(res, null, 1)));
 });
 
-router.post('/customer', function(req, res, next) {
+router.post('/service-tag', function(req, res, next) {
   console.log('\n=============================');
   console.log(req.route.stack[0].method, req.route.path, 'success');
-  guidDb.getGuid('customer', res).then((id) => {
+  guidDb.getGuid('service-tag', res).then((id) => {
     var result = Object.assign({}, req.body, {
       id,
       createdAt: moment().format('YYYY-MM-DD HH:mm:ss'),
@@ -52,7 +52,7 @@ router.post('/customer', function(req, res, next) {
   });
 });
 
-router.delete('/customer/:id(\\d+)', function(req, res, next) {
+router.delete('/service-tag/:id(\\d+)', function(req, res, next) {
   console.log('\n=============================');
   console.log(req.route.stack[0].method, req.route.path, 'success');
   db.remove(getIdQuery(req), handleErr(res, handleSuccess(res)));

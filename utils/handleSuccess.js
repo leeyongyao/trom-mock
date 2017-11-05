@@ -1,6 +1,6 @@
 function handleSuccess(res, callback, argumentIndex = 0) {
   return function() {
-    callback && callback(data);
+    callback && callback(arguments[argumentIndex]);
     res.json({
       code: 200,
       msg: '',

@@ -21,7 +21,9 @@ app.use('/oib-api', [
   // require('./modules/oib')
   require('./modules/oib/work'),
   require('./modules/oib/news'),
-  require('./modules/oib/customer')
+  require('./modules/oib/customer'),
+  require('./modules/oib/service-tag'),
+  require('./modules/oib/industry')
 ]);
 
 app.use(function(req, res, next) {

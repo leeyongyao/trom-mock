@@ -1,17 +1,13 @@
 const express = require('express');
 const moment = require('moment');
-const nedb = require('nedb');
-const path = require('path');
+const getDb = require('../../../models/oib/getDb');
 const guidDb = require('../../../models/oib/guid');
 const handleErr = require('../../../utils/handleErr');
 const handleSuccess = require('../../../utils/handleSuccess');
 const getIdQuery = require('../../../utils/getIdQuery');
 const router = express.Router();
 
-const db = new nedb({
-  filename: path.join(__dirname, '../../../db/oib/news/news.db'),
-  autoload: true
-});
+const db = getDb.news;
 
 router.get('/newses', (req, res, next) => {
   console.log('\n=============================');

@@ -1,17 +1,14 @@
 const express = require('express');
 const moment = require('moment');
-const nedb = require('nedb');
-const path = require('path');
+const getDb = require('../../../models/oib/getDb');
 const guidDb = require('../../../models/oib/guid');
 const handleErr = require('../../../utils/handleErr');
 const handleSuccess = require('../../../utils/handleSuccess');
 const getIdQuery = require('../../../utils/getIdQuery');
 const router = express.Router();
 
-const db = new nedb({
-  filename: path.join(__dirname, '../../../db/oib/work/work.db'),
-  autoload: true
-});
+const db = getDb.work;
+const brandDb = getDb.customer;
 
 router.get('/works', (req, res, next) => {
   console.log('\n=============================');
@@ -52,7 +49,25 @@ router.post('/work', function(req, res, next) {
       createdAt: moment().format('YYYY-MM-DD HH:mm:ss'),
       updatedAt: moment().format('YYYY-MM-DD HH:mm:ss')
     });
-    db.insert(result, handleErr(res, handleSuccess(res)));
+    db.insert(result, handleErr(res, (data) => {
+      console.log('lll', data);
+      brandDb.update(
+        { id: +data.brand },
+        { $addToSet: { serviceTags: { $each: data.services } } },
+        { returnUpdatedDocs: true },
+        handleErr(res, (reddd) => {
+          console.log('kkk', reddd);
+          res.json({
+            code: 200,
+            msg: '',
+            data
+          });
+        })
+      );
+      brandDb.find({}, (err, data) => {
+        console.log('ddd', data);
+      });
+    }));
   });
 });
 
