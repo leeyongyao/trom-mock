@@ -22,5 +22,9 @@ db.serviceTag = new nedb({
   filename: path.join(__dirname, '../../../db/oib/service-tag/service-tag.db'),
   autoload: true
 });
+db.customerSliders = new nedb({
+  filename: path.join(__dirname, '../../../db/oib/customer-sliders/customer-sliders.db'),
+  autoload: true
+});
 
 module.exports = db;
