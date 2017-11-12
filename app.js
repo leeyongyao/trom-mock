@@ -19,6 +19,8 @@ app.use(bodyParser.json());
 
 app.use('/oib-api', [
   // require('./modules/oib')
+  require('./modules/oib/about'),
+  require('./modules/oib/about-sliders'),
   require('./modules/oib/work'),
   require('./modules/oib/news'),
   require('./modules/oib/customer'),
