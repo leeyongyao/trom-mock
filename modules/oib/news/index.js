@@ -23,6 +23,33 @@ router.get('/newses', (req, res, next) => {
   }));
 });
 
+router.get('/news/recommendedList', (req, res, next) => {
+  console.log('\n=============================');
+  console.log(req.route.stack[0].method, req.route.path, 'success');
+  const { id } = req.query;
+  db.find({ $not: { id: parseInt(id) } }).exec(handleErr(res, (content) => {
+    let count = 4;
+    if (content.length <= count) {
+      handleSuccess(res)(content);
+      return;
+    }
+    let results = [];
+    for (let i = 0; i < count; i++) {
+      const index = parseInt(Math.random() * content.length);
+      results.push(content[index]);
+    }
+    // let indexList = [];
+    // while (indexList.length <= count) {
+    //   const index = parseInt(Math.random() * content.length);
+    //   if (indexList.indexOf(index) > -1) {
+    //     results.push(content[index]);
+    //     indexList.push(index);
+    //   }
+    // }
+    handleSuccess(res)(results);
+  }));
+});
+
 // id只能为数字
 router.get('/news/:id(\\d+)', function(req, res, next) {
   console.log('\n=============================');
