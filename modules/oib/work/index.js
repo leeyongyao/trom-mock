@@ -80,7 +80,7 @@ router.post('/work', function(req, res, next) {
           res.json({
             code: 200,
             msg: '',
-            data
+            data: data || {}
           });
         })
       );

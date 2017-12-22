@@ -4,7 +4,7 @@ function handleSuccess(res, callback, argumentIndex = 0) {
     res.json({
       code: 200,
       msg: '',
-      data: arguments[argumentIndex]
+      data: arguments[argumentIndex] || {}
     });
   }
 }
