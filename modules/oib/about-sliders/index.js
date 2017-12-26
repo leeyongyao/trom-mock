@@ -10,7 +10,7 @@ const db = getDb.aboutSliders;
 router.get('/about-sliders', (req, res, next) => {
   console.log('\n=============================');
   console.log(req.route.stack[0].method, req.route.path, 'success');
-  db.findOne({}, handleErr(res, handleSuccess(res, null, null, [])));
+  db.findOne({}, handleErr(res, handleSuccess(res, null, 0, [])));
 });
 
 router.post('/about-sliders', function(req, res, next) {
