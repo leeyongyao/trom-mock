@@ -12,9 +12,10 @@ const db = getDb.news;
 router.get('/newses', (req, res, next) => {
   console.log('\n=============================');
   console.log(req.route.stack[0].method, req.route.path, 'success');
-  const { page, rows } = req.query;
-  db.find({}).skip((page - 1) * rows).limit(rows).exec(handleErr(res, (content) => {
-    db.count({}, handleErr(res, (totalElements) => {
+  const { page, rows, enable } = req.query;
+  const query = enable && { enable: parseInt(enable) } || {};
+  db.find(query).skip((page - 1) * rows).limit(rows).exec(handleErr(res, (content) => {
+    db.count(query, handleErr(res, (totalElements) => {
       handleSuccess(res)({
         totalElements,
         content

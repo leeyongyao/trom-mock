@@ -13,8 +13,10 @@ const brandDb = getDb.customer;
 router.get('/works', (req, res, next) => {
   console.log('\n=============================');
   console.log(req.route.stack[0].method, req.route.path, 'success');
-  db.find({}).skip(req.query.page - 1).limit(req.query.rows).exec(handleErr(res, (content) => {
-    db.count({}, handleErr(res, (totalElements) => {
+  const { enable, page, rows } = req.query;
+  const query = enable && { enable: parseInt(enable) } || {};
+  db.find(query).skip(page - 1).limit(rows).exec(handleErr(res, (content) => {
+    db.count(query, handleErr(res, (totalElements) => {
       handleSuccess(res)({
         totalElements,
         content
