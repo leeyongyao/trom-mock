@@ -14,7 +14,7 @@ router.get('/newses', (req, res, next) => {
   console.log(req.route.stack[0].method, req.route.path, 'success');
   const { page, rows, enable } = req.query;
   const query = enable && { enable: parseInt(enable) } || {};
-  db.find(query).skip((page - 1) * rows).limit(rows).exec(handleErr(res, (content) => {
+  db.find(query).sort({ sort: -1 }).skip((page - 1) * rows).limit(rows).exec(handleErr(res, (content) => {
     db.count(query, handleErr(res, (totalElements) => {
       handleSuccess(res)({
         totalElements,
