@@ -34,5 +34,9 @@ db.aboutSliders = new nedb({
   filename: path.join(__dirname, '../../../db/oib/about-sliders/about-sliders.db'),
   autoload: true
 });
+db.user = new nedb({
+  filename: path.join(__dirname, '../../../db/oib/user/user.db'),
+  autoload: true
+});
 
 module.exports = db;

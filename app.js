@@ -1,4 +1,6 @@
 var express = require('express');
+var session = require('express-session');
+var NedbStore = require('express-nedb-session')(session);
 var bodyParser = require('body-parser');
 
 var app = express();
@@ -14,8 +16,32 @@ app.all('*', function(req, res, next) {
   next();
 });
 
+app.use(session({
+  secret: 'yoursecret',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    path: '/',
+    httpOnly: true,
+    maxAge: 3600 * 1000   // One hour for example
+  },
+  store: new NedbStore({ filename: './db/oib/session/session.db' })
+}));
+
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+
+app.all('*', (req, res, next) => {
+  if (req.method !== 'GET' && !/login/.test(req.url)  && !req.session.username) {
+    res.json({
+      code: 401,
+      msg: '请登录！'
+    });
+    return;
+  }
+  console.log('ppp', req);
+  next();
+});
 
 app.use('/oib-api', [
   // require('./modules/oib')
@@ -26,7 +52,8 @@ app.use('/oib-api', [
   require('./modules/oib/customer'),
   require('./modules/oib/customer-sliders'),
   require('./modules/oib/service-tag'),
-  require('./modules/oib/industry')
+  require('./modules/oib/industry'),
+  require('./modules/oib/user')
 ]);
 
 app.use(function(req, res, next) {

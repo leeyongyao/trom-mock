@@ -11,6 +11,8 @@
   "dependencies": {
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
+    "express-nedb-session": "^0.1.1",
+    "express-session": "^1.15.6",
     "moment": "^2.19.1",
     "nedb": "^1.8.0"
   }
