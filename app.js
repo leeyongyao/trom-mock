@@ -31,8 +31,16 @@ app.use(session({
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-app.all('*', (req, res, next) => {
-  if (req.method !== 'GET' && !/login/.test(req.url)  && !req.session.username) {
+app.all('*', function(req, res, next) {
+  if (/user/.test(req.url) && (req.body.token !== 'oib' || req.query.token !== 'oib')) {
+    res.json({
+      code: 401,
+      msg: '没有token'
+    });
+    return;
+  }
+
+  if (req.method !== 'GET' && !/login/.test(req.url) && !req.session.username) {
     res.json({
       code: 401,
       msg: '请登录！'
