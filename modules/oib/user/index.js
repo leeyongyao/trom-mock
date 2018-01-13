@@ -72,24 +72,17 @@ router.post('/user', function(req, res, next) {
   console.log('\n=============================');
   console.log(req.route.stack[0].method, req.route.path, 'success');
   console.log('ddd', req.body);
-  if (req.body.token === 'oib') {
-    guidDb.getGuid('user', res).then((id) => {
-      if (req.body.token) {
-        delete req.body.token;
-      }
-      var result = Object.assign({}, req.body, {
-        id,
-        createdAt: moment().format('YYYY-MM-DD HH:mm:ss'),
-        updatedAt: moment().format('YYYY-MM-DD HH:mm:ss')
-      });
-      db.insert(result, handleErr(res, handleSuccess(res)));
+  guidDb.getGuid('user', res).then((id) => {
+    if (req.body.token) {
+      delete req.body.token;
+    }
+    var result = Object.assign({}, req.body, {
+      id,
+      createdAt: moment().format('YYYY-MM-DD HH:mm:ss'),
+      updatedAt: moment().format('YYYY-MM-DD HH:mm:ss')
     });
-  } else {
-    res.json({
-      code: 401,
-      msg: '无权限'
-    })
-  }
+    db.insert(result, handleErr(res, handleSuccess(res)));
+  });
 });
 
 router.delete('/user/:id(\\d+)', function(req, res, next) {
