@@ -74,6 +74,9 @@ router.post('/user', function(req, res, next) {
   console.log('ddd', req.body);
   if (req.body.token === 'oib') {
     guidDb.getGuid('user', res).then((id) => {
+      if (req.body.token) {
+        delete req.body.token;
+      }
       var result = Object.assign({}, req.body, {
         id,
         createdAt: moment().format('YYYY-MM-DD HH:mm:ss'),

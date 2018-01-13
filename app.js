@@ -32,7 +32,9 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 app.all('*', function(req, res, next) {
-  if (/user/.test(req.url) && (req.body.token !== 'oib' || req.query.token !== 'oib')) {
+  if (/user/.test(req.url) &&
+    ((req.method === 'POST' && req.body.token !== 'oib') ||
+      (req.method === 'GET' && req.query.token !== 'oib'))) {
     res.json({
       code: 401,
       msg: '没有token'
