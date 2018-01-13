@@ -31,28 +31,6 @@ app.use(session({
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-app.all('*', function(req, res, next) {
-  if (/user/.test(req.url) &&
-    ((req.method === 'POST' && req.body.token !== 'oib') ||
-      (req.method === 'GET' && req.query.token !== 'oib'))) {
-    res.json({
-      code: 401,
-      msg: '没有token'
-    });
-    return;
-  }
-
-  if (req.method !== 'GET' && !/login/.test(req.url) && !req.session.username) {
-    res.json({
-      code: 401,
-      msg: '请登录！'
-    });
-    return;
-  }
-  console.log('ppp', req);
-  next();
-});
-
 app.use('/oib-api', [
   // require('./modules/oib')
   require('./modules/oib/about'),

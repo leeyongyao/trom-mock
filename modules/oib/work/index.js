@@ -5,6 +5,7 @@ const guidDb = require('../../../models/oib/guid');
 const handleErr = require('../../../utils/handleErr');
 const handleSuccess = require('../../../utils/handleSuccess');
 const getIdQuery = require('../../../utils/getIdQuery');
+const auth = require('../../../utils/auth');
 const router = express.Router();
 
 const db = getDb.work;
@@ -52,7 +53,7 @@ router.get('/work/:id(\\d+)', function(req, res, next) {
   db.findOne(getIdQuery(req), handleErr(res, handleSuccess(res)));
 });
 
-router.put('/work/:id(\\d+)', function(req, res, next) {
+router.put('/work/:id(\\d+)', auth.ensureAuthorized, function(req, res, next) {
   console.log('\n=============================');
   console.log(req.route.stack[0].method, req.route.path, 'success');
   db.update(getIdQuery(req), {
@@ -62,7 +63,7 @@ router.put('/work/:id(\\d+)', function(req, res, next) {
   }, { returnUpdatedDocs: true }, handleErr(res, handleSuccess(res, null, 1)));
 });
 
-router.post('/work', function(req, res, next) {
+router.post('/work', auth.ensureAuthorized, function(req, res, next) {
   console.log('\n=============================');
   console.log(req.route.stack[0].method, req.route.path, 'success');
   guidDb.getGuid('work', res).then((id) => {
@@ -93,7 +94,7 @@ router.post('/work', function(req, res, next) {
   });
 });
 
-router.delete('/work/:id(\\d+)', function(req, res, next) {
+router.delete('/work/:id(\\d+)', auth.ensureAuthorized, function(req, res, next) {
   console.log('\n=============================');
   console.log(req.route.stack[0].method, req.route.path, 'success');
   db.remove(getIdQuery(req), handleErr(res, handleSuccess(res)));

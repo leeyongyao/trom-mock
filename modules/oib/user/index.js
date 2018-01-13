@@ -5,6 +5,7 @@ const guidDb = require('../../../models/oib/guid');
 const handleErr = require('../../../utils/handleErr');
 const handleSuccess = require('../../../utils/handleSuccess');
 const getIdQuery = require('../../../utils/getIdQuery');
+const auth = require('../../../utils/auth');
 const router = express.Router();
 
 const db = getDb.user;
@@ -36,7 +37,7 @@ router.post('/logout', (req, res, next) => {
   });
 });
 
-router.get('/users', (req, res, next) => {
+router.get('/users', auth.ensureAdminToken, (req, res, next) => {
   console.log('\n=============================');
   console.log(req.route.stack[0].method, req.route.path, 'success');
   const { page, rows, enable } = req.query;
@@ -52,13 +53,13 @@ router.get('/users', (req, res, next) => {
 });
 
 // id只能为数字
-router.get('/user/:id(\\d+)', function(req, res, next) {
+router.get('/user/:id(\\d+)', auth.ensureAdminToken, function(req, res, next) {
   console.log('\n=============================');
   console.log(req.route.stack[0].method, req.route.path, 'success');
   db.findOne(getIdQuery(req), handleErr(res, handleSuccess(res)));
 });
 
-router.put('/user/:id(\\d+)', function(req, res, next) {
+router.put('/user/:id(\\d+)', auth.ensureAdminToken, function(req, res, next) {
   console.log('\n=============================');
   console.log(req.route.stack[0].method, req.route.path, 'success');
   db.update(getIdQuery(req), {
@@ -68,7 +69,7 @@ router.put('/user/:id(\\d+)', function(req, res, next) {
   }, { returnUpdatedDocs: true }, handleErr(res, handleSuccess(res, null, 1)));
 });
 
-router.post('/user', function(req, res, next) {
+router.post('/user', auth.ensureAdminToken, function(req, res, next) {
   console.log('\n=============================');
   console.log(req.route.stack[0].method, req.route.path, 'success');
   console.log('ddd', req.body);
@@ -85,7 +86,7 @@ router.post('/user', function(req, res, next) {
   });
 });
 
-router.delete('/user/:id(\\d+)', function(req, res, next) {
+router.delete('/user/:id(\\d+)', auth.ensureAdminToken, function(req, res, next) {
   console.log('\n=============================');
   console.log(req.route.stack[0].method, req.route.path, 'success');
   if (req.body.token === 'oib') {
